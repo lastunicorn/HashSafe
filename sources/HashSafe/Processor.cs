@@ -9,19 +9,19 @@ namespace DustInTheWind.HashSafe
     internal class Processor
     {
         private readonly TargetsProvider targetsProvider;
-        private readonly CustomConsole console;
+        private readonly Display display;
         private readonly HashAlgorithm hashAlgorithm;
         private readonly HashesFile hashesFile;
 
-        public Processor(TargetsProvider targetsProvider, CustomConsole console, HashAlgorithm hashAlgorithm)
+        public Processor(TargetsProvider targetsProvider, HashAlgorithm hashAlgorithm, Display display)
         {
             if (targetsProvider == null) throw new ArgumentNullException(nameof(targetsProvider));
-            if (console == null) throw new ArgumentNullException(nameof(console));
             if (hashAlgorithm == null) throw new ArgumentNullException(nameof(hashAlgorithm));
+            if (display == null) throw new ArgumentNullException(nameof(display));
 
             this.targetsProvider = targetsProvider;
-            this.console = console;
             this.hashAlgorithm = hashAlgorithm;
+            this.display = display;
 
             hashesFile = new HashesFile();
         }
@@ -40,7 +40,7 @@ namespace DustInTheWind.HashSafe
             hashesFile.Close();
 
             sw.Stop();
-            console.WriteLine($" Elapsed time: {sw.Elapsed}");
+            display.Summary(sw.Elapsed);
         }
 
         private void ProcessTarget(string target)
@@ -55,25 +55,21 @@ namespace DustInTheWind.HashSafe
 
         private void ProcessFile(string fileName)
         {
+            byte[] hash;
+
             try
             {
                 using (Stream stream = File.OpenRead(fileName))
-                {
-                    byte[] hash = hashAlgorithm.ComputeHash(stream);
-                    DisplayFileHash(fileName, hash);
-                    hashesFile.AddHash(fileName, hash);
-                }
+                    hash = hashAlgorithm.ComputeHash(stream);
             }
             catch (Exception ex)
             {
                 hashesFile.AddErrorTarget(fileName, ex);
+                return;
             }
-        }
 
-        private void DisplayFileHash(string fileName, byte[] hash)
-        {
-            string hex = BitConverter.ToString(hash);
-            console.WriteLine("{0} - {1}", hex, fileName);
+            display.DisplayFileHash(fileName, hash);
+            hashesFile.AddHash(fileName, hash);
         }
 
         private void ProcessDirectory(string directoryPath)
@@ -86,7 +82,7 @@ namespace DustInTheWind.HashSafe
 
         private void ProcessInexistentTarget(string target)
         {
-            console.WriteLine($"target not found: {target}");
+            display.DisplayTargetNotFound(target);
             hashesFile.AddMissingTarget(target);
         }
     }

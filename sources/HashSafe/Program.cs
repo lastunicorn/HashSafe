@@ -12,9 +12,9 @@ namespace DustInTheWind.HashSafe
                 using (MD5 md5 = MD5.Create())
                 {
                     TargetsProvider targetsProvider = new TargetsProvider();
-                    CustomConsole console = new CustomConsole();
+                    Display display = new Display();
 
-                    Processor processor = new Processor(targetsProvider, console, md5);
+                    Processor processor = new Processor(targetsProvider, md5, display);
                     processor.Execute();
                 }
             }
@@ -23,14 +23,7 @@ namespace DustInTheWind.HashSafe
                 Console.WriteLine(ex);
             }
 
-            DisplayPause();
-        }
-
-        private static void DisplayPause()
-        {
-            Console.WriteLine();
-            Console.Write("Press any key to continue...");
-            Console.ReadKey(true);
+            CustomConsole.Pause();
         }
     }
 }
