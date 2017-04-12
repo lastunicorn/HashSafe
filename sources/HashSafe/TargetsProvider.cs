@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 
 namespace DustInTheWind.HashSafe
 {
@@ -6,11 +7,7 @@ namespace DustInTheWind.HashSafe
     {
         public IEnumerable<string> GetTargets()
         {
-            return new[]
-            {
-                @"d:\temp\CollectionDiagrams.zip",
-                @"d:\temp\Debug"
-            };
+            return File.ReadAllLines("proj");
         }
     }
 }
