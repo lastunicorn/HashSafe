@@ -74,6 +74,7 @@ namespace DustInTheWind.HashSafe
             else
             {
                 File.Move(HashesTmpFileName, HashesFileName);
+                File.Delete(HashesBakFileName);
             }
         }
     }
