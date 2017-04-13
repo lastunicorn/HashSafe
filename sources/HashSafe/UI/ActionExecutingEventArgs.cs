@@ -15,29 +15,18 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using DustInTheWind.HashSafe.ActionModel;
 
-namespace DustInTheWind.HashSafe
+namespace DustInTheWind.HashSafe.UI
 {
-    internal class Display
+    internal class ActionExecutingEventArgs : EventArgs
     {
-        public void DisplayFileHash(string fileName, byte[] hash)
-        {
-            string hex = BitConverter.ToString(hash).Replace("-", string.Empty);
-            CustomConsole.WriteEmphasies(fileName);
-            CustomConsole.Write(" - ");
-            CustomConsole.WriteLine(hex);
-        }
+        public ActionBase ActionName { get; private set; }
 
-        public void DisplayTargetNotFound(string target)
+        public ActionExecutingEventArgs(ActionBase actionName)
         {
-            CustomConsole.WriteError($"target not found: {target}");
-        }
-
-        public void Summary(TimeSpan elapsedTime)
-        {
-            CustomConsole.WriteLine();
-            CustomConsole.WriteEmphasies(" Elapsed time: ");
-            CustomConsole.WriteLine(elapsedTime.ToString());
+            if (actionName == null) throw new ArgumentNullException("actionName");
+            ActionName = actionName;
         }
     }
 }

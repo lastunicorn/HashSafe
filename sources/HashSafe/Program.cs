@@ -15,31 +15,51 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Security.Cryptography;
+using System.Threading;
+using DustInTheWind.HashSafe.ActionModel;
+using DustInTheWind.HashSafe.Actions;
+using DustInTheWind.HashSafe.UI;
 
 namespace DustInTheWind.HashSafe
 {
     internal static class Program
     {
+        private static bool exitWasRequested;
+
         private static void Main(string[] args)
         {
             try
             {
-                using (MD5 md5 = MD5.Create())
-                {
-                    TargetsProvider targetsProvider = new TargetsProvider();
-                    Display display = new Display();
+                Display display = new Display();
+                TargetsProvider targetsProvider = new TargetsProvider();
 
-                    Processor processor = new Processor(targetsProvider, md5, display);
-                    processor.Execute();
+                ActionSet actionSet = new ActionSet();
+                actionSet.Add(new HelpAction(display, actionSet));
+                actionSet.Add(new ExitAction());
+                actionSet.Add(new HashAction(targetsProvider, display));
+
+                CommandLinePrompt commandLinePrompt = new CommandLinePrompt(display, actionSet);
+
+                while (!exitWasRequested)
+                {
+                    commandLinePrompt.Display();
                 }
+
+                display.DisplayInfo("Bye!");
+                Thread.Sleep(1000);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
-            }
+                CustomConsole.WriteError("Fatal error");
+                CustomConsole.WriteError(ex);
 
-            CustomConsole.Pause();
+                CustomConsole.Pause();
+            }
+        }
+
+        public static void RequestExit()
+        {
+            exitWasRequested = true;
         }
     }
 }

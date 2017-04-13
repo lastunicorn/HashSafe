@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
+using DustInTheWind.HashSafe.UI;
 
 namespace DustInTheWind.HashSafe
 {

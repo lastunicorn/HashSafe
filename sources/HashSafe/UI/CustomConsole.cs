@@ -16,7 +16,7 @@
 
 using System;
 
-namespace DustInTheWind.HashSafe
+namespace DustInTheWind.HashSafe.UI
 {
     internal static class CustomConsole
     {

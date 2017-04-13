@@ -43,9 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomConsole.cs" />
-    <Compile Include="Display.cs" />
+    <Compile Include="ActionModel\ActionBase.cs" />
+    <Compile Include="UI\ActionExecutedEventArgs.cs" />
+    <Compile Include="UI\ActionExecutingEventArgs.cs" />
+    <Compile Include="ActionModel\ActionInfo.cs" />
+    <Compile Include="ActionModel\ActionSet.cs" />
+    <Compile Include="UI\CommandLinePrompt.cs" />
+    <Compile Include="UI\CustomConsole.cs" />
+    <Compile Include="UI\Display.cs" />
+    <Compile Include="Actions\ExitAction.cs" />
+    <Compile Include="Actions\HashAction.cs" />
     <Compile Include="HashesFile.cs" />
+    <Compile Include="Actions\HelpAction.cs" />
     <Compile Include="Processor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,6 +63,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
