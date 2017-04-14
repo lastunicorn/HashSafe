@@ -69,16 +69,16 @@ namespace DustInTheWind.ConsolePlus.Prompter
             return display.ReadCommand(text);
         }
 
-        private void ProcessCommand(string commandText)
+        private void ProcessCommand(string request)
         {
             if (CommandSelector == null)
                 throw new Exception("A CommandSelector is necessary to select the command to be executed.");
 
-            CommandContext? commandContext = CommandSelector.SelectCommand(commandText);
+            CommandContext? commandContext = CommandSelector.SelectCommand(request);
 
             if (commandContext == null)
             {
-                List<ICommand> similarActions = CommandSelector.FindSimilarCommands(commandText);
+                List<ICommand> similarActions = CommandSelector.FindSimilarCommands(request);
 
                 if (similarActions.Count > 0)
                     display.DisplaySimilarActions(similarActions);

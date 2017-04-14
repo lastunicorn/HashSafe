@@ -4,13 +4,18 @@ Command Line Prompter
 The prompter text
 -----------------
 
+One can provide a custom prompter text that can be static (will be the same until the end of the program) or it can be build based on some custom data.
+Out of the box there is a StaticPrompterText that can be configured to provide a static text.
+For a dynamic text one must create a custom implementation of the IPrompterText interface.
+
 Provide a static prompter text:
 	commandLinePrompt.PrompterText = new StaticPrompterText { Text = "HashSafe> " }
 	
 Provide a custom implementation of the IPrompterText interface to have more control over the displayed prompter text.
 
 
-The selection of actions
-------------------------
+The selection of commands
+-------------------------
 
-Each command must implement its own algorithm for parsing a command text and deciding if it can handle the request.
+Each command must implement its own algorithm for parsing a request and decide if it can handle it.
+The CommandLinePrompter will interrogate each command one by one and will use the first one that says it can handle the request.
