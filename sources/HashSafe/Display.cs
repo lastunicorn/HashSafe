@@ -15,8 +15,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using DustInTheWind.ConsolePlus.UI;
 
-namespace DustInTheWind.HashSafe.UI
+namespace DustInTheWind.HashSafe
 {
     internal class Display
     {
@@ -44,12 +45,6 @@ namespace DustInTheWind.HashSafe.UI
         public void DisplayInfo(string text)
         {
             CustomConsole.WriteLine(text);
-        }
-
-        public void DisplayInvalidCommandError()
-        {
-            CustomConsole.WriteLine("Invalid command");
-            CustomConsole.WriteLine();
         }
     }
 }

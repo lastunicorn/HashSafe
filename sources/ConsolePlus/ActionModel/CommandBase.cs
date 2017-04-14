@@ -19,27 +19,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace DustInTheWind.HashSafe.ActionModel
+namespace DustInTheWind.ConsolePlus.ActionModel
 {
-    internal abstract class CommandBase
+    public abstract class CommandBase
     {
         private readonly IAction action;
-        public string Name { get; private set; }
+        public string Name { get; }
         public string Description => action.Description;
         public abstract IEnumerable<string> Usage { get; }
         private List<Regex> matchers;
-
-        private IEnumerable<Regex> Matchers
-        {
-            get
-            {
-                if (matchers == null)
-                    matchers = CreateMatchers() ?? new List<Regex>();
-
-                return matchers;
-            }
-        }
-
+        
         protected CommandBase(string name, IAction action)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -55,7 +44,9 @@ namespace DustInTheWind.HashSafe.ActionModel
         {
             string trimmedCommand = command.Trim();
 
-            Match match = Matchers
+            EnsureMatchers();
+
+            Match match = matchers
                 .Select(x => x.Match(trimmedCommand))
                 .FirstOrDefault(x => x.Success);
 
@@ -67,6 +58,12 @@ namespace DustInTheWind.HashSafe.ActionModel
                 Command = this,
                 Parameters = ExtractParameters(match)
             };
+        }
+
+        private void EnsureMatchers()
+        {
+            if (matchers == null)
+                matchers = CreateMatchers() ?? new List<Regex>();
         }
 
         protected abstract string[] ExtractParameters(Match match);

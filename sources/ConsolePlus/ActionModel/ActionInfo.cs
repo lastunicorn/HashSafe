@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace DustInTheWind.HashSafe.ActionModel
+namespace DustInTheWind.ConsolePlus.ActionModel
 {
-    internal struct ActionInfo
+    public struct ActionInfo
     {
         public CommandBase Command { get; set; }
         public string[] Parameters { get; set; }

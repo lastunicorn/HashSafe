@@ -17,8 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DustInTheWind.HashSafe.ActionModel;
-using DustInTheWind.HashSafe.UI;
+using DustInTheWind.ConsolePlus.ActionModel;
 
 namespace DustInTheWind.HashSafe.Actions
 {

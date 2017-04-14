@@ -84,13 +84,9 @@ namespace DustInTheWind.HashSafe
             streamWriter = null;
 
             if (File.Exists(HashesFileName))
-            {
                 File.Replace(HashesTmpFileName, HashesFileName, HashesBakFileName);
-            }
             else
-            {
                 File.Move(HashesTmpFileName, HashesFileName);
-            }
         }
     }
 }

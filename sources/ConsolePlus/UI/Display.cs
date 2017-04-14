@@ -14,19 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-using DustInTheWind.HashSafe.ActionModel;
+using System.Collections.Generic;
+using System.Linq;
+using DustInTheWind.ConsolePlus.ActionModel;
 
-namespace DustInTheWind.HashSafe.UI
+namespace DustInTheWind.ConsolePlus.UI
 {
-    internal class ActionExecutingEventArgs : EventArgs
+    internal class Display
     {
-        public CommandBase CommandName { get; private set; }
-
-        public ActionExecutingEventArgs(CommandBase commandName)
+        public void DisplayInvalidCommandError()
         {
-            if (commandName == null) throw new ArgumentNullException("commandName");
-            CommandName = commandName;
+            CustomConsole.WriteLine("Invalid command");
+            CustomConsole.WriteLine();
+        }
+
+        public void DisplaySimilarActions(IEnumerable<CommandBase> similarActions)
+        {
+            IEnumerable<string> actionNames = similarActions
+                .Select(x => x.Name);
+
+            string actionNamesConcatenated = string.Join(", ", actionNames);
+            CustomConsole.WriteLine($"Did you ment: {actionNamesConcatenated}");
+            CustomConsole.WriteLine();
         }
     }
 }

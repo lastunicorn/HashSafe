@@ -14,11 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Collections.Generic;
-
-namespace DustInTheWind.HashSafe.ActionModel
+namespace DustInTheWind.ConsolePlus.ActionModel
 {
-    internal class ActionSet : HashSet<CommandBase>
+    public interface IAction
     {
+        string Description { get; }
+        void Execute(params object[] parameters);
     }
 }

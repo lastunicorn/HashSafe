@@ -15,11 +15,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using DustInTheWind.HashSafe.ActionModel;
+using DustInTheWind.ConsolePlus.ActionModel;
 
-namespace DustInTheWind.HashSafe.UI
+namespace DustInTheWind.ConsolePlus.UI
 {
-    internal class ActionExecutedEventArgs : EventArgs
+    public class ActionExecutedEventArgs : EventArgs
     {
         public CommandBase Command { get; private set; }
         public object[] Parameters { get; private set; }

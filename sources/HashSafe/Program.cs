@@ -14,61 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-using System.Threading;
-using DustInTheWind.HashSafe.ActionModel;
-using DustInTheWind.HashSafe.Actions;
-using DustInTheWind.HashSafe.Commands;
-using DustInTheWind.HashSafe.UI;
-
 namespace DustInTheWind.HashSafe
 {
     internal static class Program
     {
-        private static bool exitWasRequested;
-
         private static void Main(string[] args)
         {
-            try
-            {
-                Display display = new Display();
-                TargetsProvider targetsProvider = new TargetsProvider();
-
-                ActionSet actionSet = new ActionSet();
-
-                HelpAction helpAction = new HelpAction(display, actionSet);
-                actionSet.Add(new HelpCommand(helpAction));
-
-                ExitAction exitAction = new ExitAction();
-                actionSet.Add(new ExitCommand(exitAction));
-                actionSet.Add(new QuitCommand(exitAction));
-                actionSet.Add(new XCommand(exitAction));
-
-                HashAction hashAction = new HashAction(targetsProvider, display);
-                actionSet.Add(new HashCommand(hashAction));
-
-                CommandLinePrompt commandLinePrompt = new CommandLinePrompt(display, actionSet);
-
-                while (!exitWasRequested)
-                {
-                    commandLinePrompt.Display();
-                }
-
-                display.DisplayInfo("Bye!");
-                Thread.Sleep(1000);
-            }
-            catch (Exception ex)
-            {
-                CustomConsole.WriteError("Fatal error");
-                CustomConsole.WriteError(ex);
-
-                CustomConsole.Pause();
-            }
-        }
-
-        public static void RequestExit()
-        {
-            exitWasRequested = true;
+            ApplicationEnvironment applicationEnvironment = new ApplicationEnvironment();
+            applicationEnvironment.Run();
         }
     }
 }

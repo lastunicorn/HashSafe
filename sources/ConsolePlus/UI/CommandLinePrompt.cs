@@ -17,31 +17,30 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DustInTheWind.HashSafe.ActionModel;
-using DustInTheWind.HashSafe.Commands;
+using DustInTheWind.ConsolePlus.ActionModel;
 
-namespace DustInTheWind.HashSafe.UI
+namespace DustInTheWind.ConsolePlus.UI
 {
-    internal sealed class CommandLinePrompt
+    public sealed class CommandLinePrompt
     {
         private readonly Display display;
         private readonly ActionSet actions;
         private readonly IPrompterText prompterText;
 
-        public CommandLinePrompt(Display display, ActionSet actions)
-            : this(display, actions, new PrompterText())
+        public CommandLinePrompt(ActionSet actions)
+            : this(actions, new PrompterText())
         {
         }
 
-        public CommandLinePrompt(Display display, ActionSet actions, IPrompterText prompterText)
+        public CommandLinePrompt(ActionSet actions, IPrompterText prompterText)
         {
-            if (display == null) throw new ArgumentNullException(nameof(display));
             if (actions == null) throw new ArgumentNullException(nameof(actions));
             if (prompterText == null) throw new ArgumentNullException(nameof(prompterText));
 
-            this.display = display;
             this.actions = actions;
             this.prompterText = prompterText;
+
+            display = new Display();
         }
 
         public event EventHandler<ActionExecutingEventArgs> ActionExecuting;
@@ -67,35 +66,31 @@ namespace DustInTheWind.HashSafe.UI
 
         private void ProcessCommand(string commandText)
         {
-            CommandBase command;
-            object[] parameters;
-
             ActionInfo? actionInfo = FindMatchingAction(commandText);
 
             if (actionInfo == null)
             {
-                List<CommandBase> similarActions = actions
-                    .Where(x => commandText.TrimStart().StartsWith(x.Name))
-                    .ToList();
+                List<CommandBase> similarActions = FindSimilarCommands(commandText);
 
                 if (similarActions.Count > 0)
-                {
-                    command = actions.First(x => x is HelpCommand);
-                    parameters = similarActions.Select(x => (object)x.Name).ToArray();
-                }
+                    display.DisplaySimilarActions(similarActions);
                 else
-                {
                     display.DisplayInvalidCommandError();
-                    return;
-                }
             }
             else
             {
-                command = actionInfo.Value.Command;
-                parameters = actionInfo.Value.Parameters;
-            }
+                CommandBase command = actionInfo.Value.Command;
+                object[] parameters = actionInfo.Value.Parameters;
 
-            ExecuteAction(command, parameters);
+                ExecuteAction(command, parameters);
+            }
+        }
+
+        private List<CommandBase> FindSimilarCommands(string commandText)
+        {
+            return actions
+                .Where(x => commandText.Trim().StartsWith(x.Name) || x.Name.StartsWith(commandText.Trim()))
+                .ToList();
         }
 
         private void ExecuteAction(CommandBase command, object[] parameters)

@@ -14,32 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using DustInTheWind.ConsolePlus.ActionModel;
-
-namespace DustInTheWind.HashSafe.Commands
+namespace DustInTheWind.ConsolePlus.UI
 {
-    internal class HashCommand : CommandBase
+    internal class PrompterText : IPrompterText
     {
-        public override IEnumerable<string> Usage => new List<string> { "<<hash>>" };
-
-        public HashCommand(IAction action)
-            : base("hash", action)
+        public override string ToString()
         {
-        }
-
-        protected override List<Regex> CreateMatchers()
-        {
-            return new List<Regex>
-            {
-                new Regex(@"^\s*(hash)\s*$", RegexOptions.IgnoreCase | RegexOptions.Singleline)
-            };
-        }
-
-        protected override string[] ExtractParameters(Match match)
-        {
-            return new string[0];
+            return "> ";
         }
     }
 }

@@ -20,11 +20,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("HashSafe")]
+[assembly: AssemblyTitle("ConsolePlus")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("HashSafe")]
+[assembly: AssemblyProduct("ConsolePlus")]
 [assembly: AssemblyCopyright("Copyright © Dust in the Wind 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -35,7 +35,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("03ab9e33-50ae-4c9b-a856-3364b6c9fb7c")]
+[assembly: Guid("45a59c28-a501-4cfe-83d0-edb0d3401ca2")]
 
 // Version information for an assembly consists of the following four values:
 //

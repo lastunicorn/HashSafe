@@ -16,9 +16,9 @@
 
 using System;
 
-namespace DustInTheWind.HashSafe.UI
+namespace DustInTheWind.ConsolePlus.UI
 {
-    internal static class CustomConsole
+    public static class CustomConsole
     {
         public static void WriteLineEmphasies(string text)
         {
