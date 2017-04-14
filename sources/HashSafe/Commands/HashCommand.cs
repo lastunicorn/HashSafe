@@ -1,4 +1,4 @@
-// HashSafe
+﻿// HashSafe
 // Copyright (C) 2017 Dust in the Wind
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -14,17 +14,32 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using DustInTheWind.HashSafe.ActionModel;
 
-namespace DustInTheWind.HashSafe.Actions
+namespace DustInTheWind.HashSafe.Commands
 {
-    internal class ExitAction : IAction
+    internal class HashCommand : CommandBase
     {
-        public string Description => "Exits the game.";
+        public override IEnumerable<string> Usage => new List<string> { "<<hash>>" };
 
-        public void Execute(params object[] parameters)
+        public HashCommand(IAction action)
+            : base("hash", action)
         {
-            Program.RequestExit();
+        }
+
+        protected override List<Regex> CreateMatchers()
+        {
+            return new List<Regex>
+            {
+                new Regex(@"^\s*(hash)\s*$", RegexOptions.IgnoreCase | RegexOptions.Singleline)
+            };
+        }
+
+        protected override string[] ExtractParameters(Match match)
+        {
+            return new string[0];
         }
     }
 }

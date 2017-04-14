@@ -21,12 +21,12 @@ namespace DustInTheWind.HashSafe.UI
 {
     internal class ActionExecutingEventArgs : EventArgs
     {
-        public ActionBase ActionName { get; private set; }
+        public CommandBase CommandName { get; private set; }
 
-        public ActionExecutingEventArgs(ActionBase actionName)
+        public ActionExecutingEventArgs(CommandBase commandName)
         {
-            if (actionName == null) throw new ArgumentNullException("actionName");
-            ActionName = actionName;
+            if (commandName == null) throw new ArgumentNullException("commandName");
+            CommandName = commandName;
         }
     }
 }

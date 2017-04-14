@@ -18,7 +18,7 @@ using System.Collections.Generic;
 
 namespace DustInTheWind.HashSafe.ActionModel
 {
-    internal class ActionSet : HashSet<ActionBase>
+    internal class ActionSet : HashSet<CommandBase>
     {
     }
 }

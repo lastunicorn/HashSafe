@@ -18,7 +18,7 @@ namespace DustInTheWind.HashSafe.ActionModel
 {
     internal struct ActionInfo
     {
-        public ActionBase Action { get; set; }
+        public CommandBase Command { get; set; }
         public string[] Parameters { get; set; }
     }
 }

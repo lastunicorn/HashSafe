@@ -18,22 +18,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DustInTheWind.HashSafe.ActionModel;
-using DustInTheWind.HashSafe.Actions;
+using DustInTheWind.HashSafe.Commands;
 
 namespace DustInTheWind.HashSafe.UI
 {
-    internal class CommandLinePrompt
+    internal sealed class CommandLinePrompt
     {
         private readonly Display display;
         private readonly ActionSet actions;
+        private readonly IPrompterText prompterText;
 
         public CommandLinePrompt(Display display, ActionSet actions)
+            : this(display, actions, new PrompterText())
+        {
+        }
+
+        public CommandLinePrompt(Display display, ActionSet actions, IPrompterText prompterText)
         {
             if (display == null) throw new ArgumentNullException(nameof(display));
             if (actions == null) throw new ArgumentNullException(nameof(actions));
+            if (prompterText == null) throw new ArgumentNullException(nameof(prompterText));
 
             this.display = display;
             this.actions = actions;
+            this.prompterText = prompterText;
         }
 
         public event EventHandler<ActionExecutingEventArgs> ActionExecuting;
@@ -41,61 +49,63 @@ namespace DustInTheWind.HashSafe.UI
 
         public void Display()
         {
-            string command = null;
+            string commandText = null;
 
-            while (string.IsNullOrEmpty(command))
-                command = ReadCommand();
+            while (string.IsNullOrEmpty(commandText))
+                commandText = ReadCommand();
 
-            ProcessCommand(command);
+            ProcessCommand(commandText);
         }
 
         private string ReadCommand()
         {
-            CustomConsole.WriteEmphasies("HashSafe> ");
+            string text = prompterText.ToString();
+            CustomConsole.WriteEmphasies(text);
+
             return CustomConsole.ReadAction();
         }
 
-        private void ProcessCommand(string command)
+        private void ProcessCommand(string commandText)
         {
-            ActionBase action;
+            CommandBase command;
             object[] parameters;
 
-            ActionInfo? actionInfo = FindMatchingAction(command);
+            ActionInfo? actionInfo = FindMatchingAction(commandText);
 
             if (actionInfo == null)
             {
-                List<ActionBase> similarActions = actions
-                    .Where(x => x.Names.Any(z => command.TrimStart().StartsWith(z)))
+                List<CommandBase> similarActions = actions
+                    .Where(x => commandText.TrimStart().StartsWith(x.Name))
                     .ToList();
 
                 if (similarActions.Count > 0)
                 {
-                    action = actions.First(x => x is HelpAction);
+                    command = actions.First(x => x is HelpCommand);
                     parameters = similarActions.Select(x => (object)x.Name).ToArray();
                 }
                 else
                 {
-                    display.DisplayInfo("Invalid command");
+                    display.DisplayInvalidCommandError();
                     return;
                 }
             }
             else
             {
-                action = actionInfo.Value.Action;
+                command = actionInfo.Value.Command;
                 parameters = actionInfo.Value.Parameters;
             }
 
-            ExecuteAction(action, parameters);
+            ExecuteAction(command, parameters);
         }
 
-        private void ExecuteAction(ActionBase action, object[] parameters)
+        private void ExecuteAction(CommandBase command, object[] parameters)
         {
-            ActionExecutingEventArgs actionExecutingEventArgs = new ActionExecutingEventArgs(action);
+            ActionExecutingEventArgs actionExecutingEventArgs = new ActionExecutingEventArgs(command);
             OnActionExecuting(actionExecutingEventArgs);
 
-            action.Execute(parameters);
+            command.Execute(parameters);
 
-            ActionExecutedEventArgs actionExecutedEventArgs = new ActionExecutedEventArgs(action, parameters);
+            ActionExecutedEventArgs actionExecutedEventArgs = new ActionExecutedEventArgs(command, parameters);
             OnActionExecuted(actionExecutedEventArgs);
         }
 
@@ -106,12 +116,12 @@ namespace DustInTheWind.HashSafe.UI
                 .FirstOrDefault(x => x != null);
         }
 
-        protected virtual void OnActionExecuting(ActionExecutingEventArgs e)
+        private void OnActionExecuting(ActionExecutingEventArgs e)
         {
             ActionExecuting?.Invoke(this, e);
         }
 
-        protected virtual void OnActionExecuted(ActionExecutedEventArgs e)
+        private void OnActionExecuted(ActionExecutedEventArgs e)
         {
             ActionExecuted?.Invoke(this, e);
         }

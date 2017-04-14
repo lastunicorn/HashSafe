@@ -1,4 +1,4 @@
-﻿// HashSafe
+// HashSafe
 // Copyright (C) 2017 Dust in the Wind
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -15,21 +15,20 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 using DustInTheWind.HashSafe.ActionModel;
 using DustInTheWind.HashSafe.UI;
 
 namespace DustInTheWind.HashSafe.Actions
 {
-    internal class HashAction : ActionBase
+    internal class HashAction : IAction
     {
         private readonly TargetsProvider targetsProvider;
         private readonly Display display;
 
+        public string Description => "Calculates the hashes for all the targets in the proj file.";
+
         public HashAction(TargetsProvider targetsProvider, Display display)
-            : base("hash")
         {
             if (targetsProvider == null) throw new ArgumentNullException(nameof(targetsProvider));
             if (display == null) throw new ArgumentNullException(nameof(display));
@@ -38,30 +37,7 @@ namespace DustInTheWind.HashSafe.Actions
             this.display = display;
         }
 
-        public override string Description
-        {
-            get { return "Calculates the hashes for all the targets in the proj file."; }
-        }
-
-        public override List<string> Usage
-        {
-            get { return new List<string> { "<<hash>>" }; }
-        }
-
-        protected override List<Regex> CreateMatchers()
-        {
-            return new List<Regex>
-            {
-                new Regex(@"^\s*(hash)\s*$", RegexOptions.IgnoreCase | RegexOptions.Singleline)
-            };
-        }
-
-        protected override string[] ExtractParameters(Match match)
-        {
-            return new string[0];
-        }
-
-        public override void Execute(params object[] parameters)
+        public void Execute(params object[] parameters)
         {
             using (MD5 md5 = MD5.Create())
             {

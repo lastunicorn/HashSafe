@@ -14,23 +14,35 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using DustInTheWind.HashSafe.ActionModel;
 
-namespace DustInTheWind.HashSafe.UI
+namespace DustInTheWind.HashSafe.Commands
 {
-    internal class ActionExecutedEventArgs : EventArgs
+    internal class HelpCommand : CommandBase
     {
-        public CommandBase Command { get; private set; }
-        public object[] Parameters { get; private set; }
+        public override IEnumerable<string> Usage => new List<string> { "<<help>> <<<command> >>" };
 
-        public ActionExecutedEventArgs(CommandBase command, object[] parameters)
+        public HelpCommand(IAction action)
+            : base("help", action)
         {
-            if (command == null) throw new ArgumentNullException("command");
-            if (parameters == null) throw new ArgumentNullException("parameters");
+        }
 
-            Command = command;
-            Parameters = parameters;
+        protected override List<Regex> CreateMatchers()
+        {
+            return new List<Regex>
+            {
+                new Regex(@"^\s*help\s*(\s(?'command'.+))\s*$", RegexOptions.IgnoreCase | RegexOptions.Singleline)
+            };
+        }
+
+        protected override string[] ExtractParameters(Match match)
+        {
+            return new[]
+            {
+                match.Groups["command"].Value
+            };
         }
     }
 }

@@ -14,17 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using DustInTheWind.HashSafe.ActionModel;
-
-namespace DustInTheWind.HashSafe.Actions
+namespace DustInTheWind.HashSafe.ActionModel
 {
-    internal class ExitAction : IAction
+    internal interface IAction
     {
-        public string Description => "Exits the game.";
-
-        public void Execute(params object[] parameters)
-        {
-            Program.RequestExit();
-        }
+        string Description { get; }
+        void Execute(params object[] parameters);
     }
 }

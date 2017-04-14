@@ -38,11 +38,18 @@ namespace DustInTheWind.HashSafe.UI
             CustomConsole.WriteLine();
             CustomConsole.WriteEmphasies(" Elapsed time: ");
             CustomConsole.WriteLine(elapsedTime.ToString());
+            CustomConsole.WriteLine();
         }
 
         public void DisplayInfo(string text)
         {
             CustomConsole.WriteLine(text);
+        }
+
+        public void DisplayInvalidCommandError()
+        {
+            CustomConsole.WriteLine("Invalid command");
+            CustomConsole.WriteLine();
         }
     }
 }

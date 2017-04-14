@@ -21,16 +21,12 @@ using System.Text.RegularExpressions;
 
 namespace DustInTheWind.HashSafe.ActionModel
 {
-    internal abstract class ActionBase
+    internal abstract class CommandBase
     {
-        public string Name
-        {
-            get { return Names.Count > 0 ? Names[0] : null; }
-        }
-
-        public List<string> Names { get; private set; }
-        public abstract string Description { get; }
-        public abstract List<string> Usage { get; }
+        private readonly IAction action;
+        public string Name { get; private set; }
+        public string Description => action.Description;
+        public abstract IEnumerable<string> Usage { get; }
         private List<Regex> matchers;
 
         private IEnumerable<Regex> Matchers
@@ -44,10 +40,13 @@ namespace DustInTheWind.HashSafe.ActionModel
             }
         }
 
-        protected ActionBase(params string[] names)
+        protected CommandBase(string name, IAction action)
         {
-            if (names == null) throw new ArgumentNullException("names");
-            Names = new List<string>(names);
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (action == null) throw new ArgumentNullException(nameof(action));
+
+            Name = name;
+            this.action = action;
         }
 
         protected abstract List<Regex> CreateMatchers();
@@ -65,13 +64,16 @@ namespace DustInTheWind.HashSafe.ActionModel
 
             return new ActionInfo
             {
-                Action = this,
+                Command = this,
                 Parameters = ExtractParameters(match)
             };
         }
 
         protected abstract string[] ExtractParameters(Match match);
 
-        public abstract void Execute(params object[] parameters);
+        public void Execute(params object[] parameters)
+        {
+            action.Execute(parameters);
+        }
     }
 }
