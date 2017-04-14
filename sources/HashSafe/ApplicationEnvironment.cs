@@ -37,9 +37,12 @@ namespace DustInTheWind.HashSafe
                 display = new Display();
                 targetsProvider = new TargetsProvider();
 
-                ActionSet actionSet = CreateActions();
+                CommandSet commands = CreateCommands();
 
-                CommandLinePrompt commandLinePrompt = new CommandLinePrompt(actionSet);
+                CommandLinePrompt commandLinePrompt = new CommandLinePrompt(commands)
+                {
+                    PrompterText = new StaticPrompterText { Text = "HashSafe> " }
+                };
 
                 while (!exitWasRequested)
                     commandLinePrompt.Display();
@@ -56,22 +59,22 @@ namespace DustInTheWind.HashSafe
             }
         }
 
-        private ActionSet CreateActions()
+        private CommandSet CreateCommands()
         {
-            ActionSet actionSet = new ActionSet();
+            CommandSet commands = new CommandSet();
 
-            HelpAction helpAction = new HelpAction(display, actionSet);
-            actionSet.Add(new HelpCommand(helpAction));
+            HelpAction helpAction = new HelpAction(display, commands);
+            commands.Add(new HelpCommand(helpAction));
 
             ExitAction exitAction = new ExitAction(this);
-            actionSet.Add(new ExitCommand(exitAction));
-            actionSet.Add(new QuitCommand(exitAction));
-            actionSet.Add(new XCommand(exitAction));
+            commands.Add(new ExitCommand(exitAction));
+            commands.Add(new QuitCommand(exitAction));
+            commands.Add(new XCommand(exitAction));
 
             HashAction hashAction = new HashAction(targetsProvider, display);
-            actionSet.Add(new HashCommand(hashAction));
+            commands.Add(new HashCommand(hashAction));
 
-            return actionSet;
+            return commands;
         }
 
         public void RequestExit()

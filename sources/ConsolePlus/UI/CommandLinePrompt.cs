@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using DustInTheWind.ConsolePlus.ActionModel;
 
 namespace DustInTheWind.ConsolePlus.UI
@@ -24,21 +23,20 @@ namespace DustInTheWind.ConsolePlus.UI
     public sealed class CommandLinePrompt
     {
         private readonly Display display;
-        private readonly ActionSet actions;
-        private readonly IPrompterText prompterText;
+        private readonly ICommandSelector commandSelector;
 
-        public CommandLinePrompt(ActionSet actions)
-            : this(actions, new PrompterText())
+        public IPrompterText PrompterText { get; set; }
+
+        public CommandLinePrompt(CommandSet commands)
+            : this(new CommandSelector(commands))
         {
         }
 
-        public CommandLinePrompt(ActionSet actions, IPrompterText prompterText)
+        public CommandLinePrompt(ICommandSelector commandSelector)
         {
-            if (actions == null) throw new ArgumentNullException(nameof(actions));
-            if (prompterText == null) throw new ArgumentNullException(nameof(prompterText));
+            if (commandSelector == null) throw new ArgumentNullException(nameof(commandSelector));
 
-            this.actions = actions;
-            this.prompterText = prompterText;
+            this.commandSelector = commandSelector;
 
             display = new Display();
         }
@@ -58,7 +56,10 @@ namespace DustInTheWind.ConsolePlus.UI
 
         private string ReadCommand()
         {
-            string text = prompterText.ToString();
+            if (PrompterText == null)
+                PrompterText = new StaticPrompterText();
+
+            string text = PrompterText.ToString();
             CustomConsole.WriteEmphasies(text);
 
             return CustomConsole.ReadAction();
@@ -66,11 +67,11 @@ namespace DustInTheWind.ConsolePlus.UI
 
         private void ProcessCommand(string commandText)
         {
-            ActionInfo? actionInfo = FindMatchingAction(commandText);
+            CommandContext? commandContext = commandSelector.SelectCommand(commandText);
 
-            if (actionInfo == null)
+            if (commandContext == null)
             {
-                List<CommandBase> similarActions = FindSimilarCommands(commandText);
+                List<CommandBase> similarActions = commandSelector.FindSimilarCommands(commandText);
 
                 if (similarActions.Count > 0)
                     display.DisplaySimilarActions(similarActions);
@@ -79,21 +80,14 @@ namespace DustInTheWind.ConsolePlus.UI
             }
             else
             {
-                CommandBase command = actionInfo.Value.Command;
-                object[] parameters = actionInfo.Value.Parameters;
+                CommandBase command = commandContext.Value.Command;
+                object[] parameters = commandContext.Value.Parameters;
 
-                ExecuteAction(command, parameters);
+                ExecuteCommand(command, parameters);
             }
         }
 
-        private List<CommandBase> FindSimilarCommands(string commandText)
-        {
-            return actions
-                .Where(x => commandText.Trim().StartsWith(x.Name) || x.Name.StartsWith(commandText.Trim()))
-                .ToList();
-        }
-
-        private void ExecuteAction(CommandBase command, object[] parameters)
+        private void ExecuteCommand(CommandBase command, object[] parameters)
         {
             ActionExecutingEventArgs actionExecutingEventArgs = new ActionExecutingEventArgs(command);
             OnActionExecuting(actionExecutingEventArgs);
@@ -102,13 +96,6 @@ namespace DustInTheWind.ConsolePlus.UI
 
             ActionExecutedEventArgs actionExecutedEventArgs = new ActionExecutedEventArgs(command, parameters);
             OnActionExecuted(actionExecutedEventArgs);
-        }
-
-        private ActionInfo? FindMatchingAction(string command)
-        {
-            return actions
-                .Select(x => x.Parse(command))
-                .FirstOrDefault(x => x != null);
         }
 
         private void OnActionExecuting(ActionExecutingEventArgs e)

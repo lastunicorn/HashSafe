@@ -40,7 +40,7 @@ namespace DustInTheWind.ConsolePlus.ActionModel
 
         protected abstract List<Regex> CreateMatchers();
 
-        public ActionInfo? Parse(string command)
+        public CommandContext? ParseAndCreateContext(string command)
         {
             string trimmedCommand = command.Trim();
 
@@ -53,7 +53,7 @@ namespace DustInTheWind.ConsolePlus.ActionModel
             if (match == null)
                 return null;
 
-            return new ActionInfo
+            return new CommandContext
             {
                 Command = this,
                 Parameters = ExtractParameters(match)
