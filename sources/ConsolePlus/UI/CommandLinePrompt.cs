@@ -23,12 +23,17 @@ namespace DustInTheWind.ConsolePlus.UI
     public sealed class CommandLinePrompt
     {
         private readonly Display display;
-        private readonly ICommandSelector commandSelector;
 
         public IPrompterText PrompterText { get; set; }
+        public ICommandSelector CommandSelector { get; set; }
 
-        public CommandLinePrompt(CommandSet commands)
-            : this(new CommandSelector(commands))
+        public CommandLinePrompt()
+            : this(new DefaultCommandSelector(new CommandBase[0]))
+        {
+        }
+
+        public CommandLinePrompt(IEnumerable<CommandBase> commands)
+            : this(new DefaultCommandSelector(commands))
         {
         }
 
@@ -36,7 +41,7 @@ namespace DustInTheWind.ConsolePlus.UI
         {
             if (commandSelector == null) throw new ArgumentNullException(nameof(commandSelector));
 
-            this.commandSelector = commandSelector;
+            CommandSelector = commandSelector;
 
             display = new Display();
         }
@@ -67,11 +72,14 @@ namespace DustInTheWind.ConsolePlus.UI
 
         private void ProcessCommand(string commandText)
         {
-            CommandContext? commandContext = commandSelector.SelectCommand(commandText);
+            if (CommandSelector == null)
+                throw new Exception("A CommandSelector is necessary to select the command to be executed.");
+
+            CommandContext? commandContext = CommandSelector.SelectCommand(commandText);
 
             if (commandContext == null)
             {
-                List<CommandBase> similarActions = commandSelector.FindSimilarCommands(commandText);
+                List<CommandBase> similarActions = CommandSelector.FindSimilarCommands(commandText);
 
                 if (similarActions.Count > 0)
                     display.DisplaySimilarActions(similarActions);

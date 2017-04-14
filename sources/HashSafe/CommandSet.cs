@@ -15,8 +15,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Collections.Generic;
+using DustInTheWind.ConsolePlus.ActionModel;
 
-namespace DustInTheWind.ConsolePlus.ActionModel
+namespace DustInTheWind.HashSafe
 {
     public class CommandSet : HashSet<CommandBase>
     {

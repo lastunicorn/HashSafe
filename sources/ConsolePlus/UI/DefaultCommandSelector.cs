@@ -21,11 +21,11 @@ using DustInTheWind.ConsolePlus.ActionModel;
 
 namespace DustInTheWind.ConsolePlus.UI
 {
-    public sealed class CommandSelector : ICommandSelector
+    public sealed class DefaultCommandSelector : ICommandSelector
     {
-        private readonly CommandSet commands;
+        private readonly IEnumerable<CommandBase> commands;
 
-        public CommandSelector(CommandSet commands)
+        public DefaultCommandSelector(IEnumerable<CommandBase> commands)
         {
             if (commands == null) throw new ArgumentNullException(nameof(commands));
             this.commands = commands;

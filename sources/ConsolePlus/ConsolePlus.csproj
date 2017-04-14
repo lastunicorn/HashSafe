@@ -44,11 +44,10 @@
       <Link>Properties\AssemblyInfo.Shared.cs</Link>
     </Compile>
     <Compile Include="ActionModel\CommandContext.cs" />
-    <Compile Include="ActionModel\CommandSet.cs" />
     <Compile Include="ActionModel\CommandBase.cs" />
     <Compile Include="ActionModel\IAction.cs" />
     <Compile Include="UI\CommandLinePrompt.cs" />
-    <Compile Include="UI\CommandSelector.cs" />
+    <Compile Include="UI\DefaultCommandSelector.cs" />
     <Compile Include="UI\ICommandSelector.cs" />
     <Compile Include="UI\IPrompterText.cs" />
     <Compile Include="UI\StaticPrompterText.cs" />
