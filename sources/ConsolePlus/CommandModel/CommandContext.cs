@@ -14,15 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace DustInTheWind.ConsolePlus.UI
+namespace DustInTheWind.ConsolePlus.CommandModel
 {
-    public class StaticPrompterText : IPrompterText
+    public struct CommandContext
     {
-        public string Text { get; set; } = "> ";
-
-        public override string ToString()
-        {
-            return Text;
-        }
+        public ICommand Command { get; set; }
+        public string[] Parameters { get; set; }
     }
 }

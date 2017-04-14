@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DustInTheWind.ConsolePlus.ActionModel;
+using DustInTheWind.ConsolePlus.CommandModel;
 
 namespace DustInTheWind.HashSafe.Actions
 {
@@ -50,10 +50,10 @@ namespace DustInTheWind.HashSafe.Actions
 
         private void Execute(string verbName)
         {
-            IEnumerable<CommandBase> verbsToDisplay = commands
+            IEnumerable<ICommand> verbsToDisplay = commands
                 .Where(x => x.Name == verbName);
 
-            foreach (CommandBase verb in verbsToDisplay)
+            foreach (ICommand verb in verbsToDisplay)
             {
                 display.DisplayInfo(verb.Name);
                 display.DisplayInfo(verb.Description);

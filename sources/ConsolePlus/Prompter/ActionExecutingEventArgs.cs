@@ -1,4 +1,4 @@
-﻿// HashSafe
+// HashSafe
 // Copyright (C) 2017 Dust in the Wind
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -15,22 +15,18 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using DustInTheWind.ConsolePlus.ActionModel;
+using DustInTheWind.ConsolePlus.CommandModel;
 
-namespace DustInTheWind.ConsolePlus.UI
+namespace DustInTheWind.ConsolePlus.Prompter
 {
-    public class ActionExecutedEventArgs : EventArgs
+    public class ActionExecutingEventArgs : EventArgs
     {
-        public CommandBase Command { get; private set; }
-        public object[] Parameters { get; private set; }
+        public ICommand CommandName { get; private set; }
 
-        public ActionExecutedEventArgs(CommandBase command, object[] parameters)
+        public ActionExecutingEventArgs(ICommand commandName)
         {
-            if (command == null) throw new ArgumentNullException("command");
-            if (parameters == null) throw new ArgumentNullException("parameters");
-
-            Command = command;
-            Parameters = parameters;
+            if (commandName == null) throw new ArgumentNullException(nameof(commandName));
+            CommandName = commandName;
         }
     }
 }

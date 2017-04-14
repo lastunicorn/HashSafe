@@ -16,9 +16,10 @@
 
 using System;
 using System.Collections.Generic;
-using DustInTheWind.ConsolePlus.ActionModel;
+using DustInTheWind.ConsolePlus.CommandModel;
+using DustInTheWind.ConsolePlus.UI;
 
-namespace DustInTheWind.ConsolePlus.UI
+namespace DustInTheWind.ConsolePlus.Prompter
 {
     public sealed class CommandLinePrompt
     {
@@ -28,11 +29,11 @@ namespace DustInTheWind.ConsolePlus.UI
         public ICommandSelector CommandSelector { get; set; }
 
         public CommandLinePrompt()
-            : this(new DefaultCommandSelector(new CommandBase[0]))
+            : this(new DefaultCommandSelector(new ICommand[0]))
         {
         }
 
-        public CommandLinePrompt(IEnumerable<CommandBase> commands)
+        public CommandLinePrompt(IEnumerable<ICommand> commands)
             : this(new DefaultCommandSelector(commands))
         {
         }
@@ -79,7 +80,7 @@ namespace DustInTheWind.ConsolePlus.UI
 
             if (commandContext == null)
             {
-                List<CommandBase> similarActions = CommandSelector.FindSimilarCommands(commandText);
+                List<ICommand> similarActions = CommandSelector.FindSimilarCommands(commandText);
 
                 if (similarActions.Count > 0)
                     display.DisplaySimilarActions(similarActions);
@@ -88,14 +89,14 @@ namespace DustInTheWind.ConsolePlus.UI
             }
             else
             {
-                CommandBase command = commandContext.Value.Command;
+                ICommand command = commandContext.Value.Command;
                 object[] parameters = commandContext.Value.Parameters;
 
                 ExecuteCommand(command, parameters);
             }
         }
 
-        private void ExecuteCommand(CommandBase command, object[] parameters)
+        private void ExecuteCommand(ICommand command, object[] parameters)
         {
             ActionExecutingEventArgs actionExecutingEventArgs = new ActionExecutingEventArgs(command);
             OnActionExecuting(actionExecutingEventArgs);

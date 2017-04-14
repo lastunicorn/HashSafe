@@ -16,7 +16,7 @@
 
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using DustInTheWind.ConsolePlus.ActionModel;
+using DustInTheWind.ConsolePlus.CommandModel;
 
 namespace DustInTheWind.HashSafe.Commands
 {

@@ -1,4 +1,4 @@
-﻿// HashSafe
+// HashSafe
 // Copyright (C) 2017 Dust in the Wind
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -15,31 +15,28 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using System.Linq;
 using DustInTheWind.ConsolePlus.CommandModel;
+using DustInTheWind.ConsolePlus.UI;
 
-namespace DustInTheWind.HashSafe.Commands
+namespace DustInTheWind.ConsolePlus.Prompter
 {
-    internal class HashCommand : CommandBase
+    internal class Display
     {
-        public override IEnumerable<string> Usage => new List<string> { "<<hash>>" };
-
-        public HashCommand(IAction action)
-            : base("hash", action)
+        public void DisplayInvalidCommandError()
         {
+            CustomConsole.WriteLine("Invalid command");
+            CustomConsole.WriteLine();
         }
 
-        protected override List<Regex> CreateMatchers()
+        public void DisplaySimilarActions(IEnumerable<ICommand> similarActions)
         {
-            return new List<Regex>
-            {
-                new Regex(@"^\s*(hash)\s*$", RegexOptions.IgnoreCase | RegexOptions.Singleline)
-            };
-        }
+            IEnumerable<string> actionNames = similarActions
+                .Select(x => x.Name);
 
-        protected override string[] ExtractParameters(Match match)
-        {
-            return new string[0];
+            string actionNamesConcatenated = string.Join(", ", actionNames);
+            CustomConsole.WriteLine($"Did you meen: {actionNamesConcatenated}");
+            CustomConsole.WriteLine();
         }
     }
 }

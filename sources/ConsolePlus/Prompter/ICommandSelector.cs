@@ -1,4 +1,4 @@
-﻿// HashSafe
+// HashSafe
 // Copyright (C) 2017 Dust in the Wind
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -14,10 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace DustInTheWind.ConsolePlus.UI
+using System.Collections.Generic;
+using DustInTheWind.ConsolePlus.CommandModel;
+
+namespace DustInTheWind.ConsolePlus.Prompter
 {
-    public interface IPrompterText
+    public interface ICommandSelector
     {
-        string ToString();
+        CommandContext? SelectCommand(string commandText);
+        List<ICommand> FindSimilarCommands(string commandText);
     }
 }

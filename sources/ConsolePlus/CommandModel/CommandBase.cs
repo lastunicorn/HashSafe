@@ -19,16 +19,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace DustInTheWind.ConsolePlus.ActionModel
+namespace DustInTheWind.ConsolePlus.CommandModel
 {
-    public abstract class CommandBase
+    public abstract class CommandBase : ICommand
     {
         private readonly IAction action;
         public string Name { get; }
         public string Description => action.Description;
         public abstract IEnumerable<string> Usage { get; }
         private List<Regex> matchers;
-        
+
         protected CommandBase(string name, IAction action)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));

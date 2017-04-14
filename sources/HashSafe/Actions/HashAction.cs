@@ -16,7 +16,7 @@
 
 using System;
 using System.Security.Cryptography;
-using DustInTheWind.ConsolePlus.ActionModel;
+using DustInTheWind.ConsolePlus.CommandModel;
 
 namespace DustInTheWind.HashSafe.Actions
 {

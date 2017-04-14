@@ -43,19 +43,20 @@
     <Compile Include="..\AssemblyInfo.Shared.cs">
       <Link>Properties\AssemblyInfo.Shared.cs</Link>
     </Compile>
-    <Compile Include="ActionModel\CommandContext.cs" />
-    <Compile Include="ActionModel\CommandBase.cs" />
-    <Compile Include="ActionModel\IAction.cs" />
-    <Compile Include="UI\CommandLinePrompt.cs" />
-    <Compile Include="UI\DefaultCommandSelector.cs" />
-    <Compile Include="UI\ICommandSelector.cs" />
-    <Compile Include="UI\IPrompterText.cs" />
-    <Compile Include="UI\StaticPrompterText.cs" />
+    <Compile Include="CommandModel\CommandContext.cs" />
+    <Compile Include="CommandModel\CommandBase.cs" />
+    <Compile Include="CommandModel\IAction.cs" />
+    <Compile Include="CommandModel\ICommand.cs" />
+    <Compile Include="Prompter\CommandLinePrompt.cs" />
+    <Compile Include="Prompter\DefaultCommandSelector.cs" />
+    <Compile Include="Prompter\ICommandSelector.cs" />
+    <Compile Include="Prompter\IPrompterText.cs" />
+    <Compile Include="Prompter\StaticPrompterText.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\ActionExecutedEventArgs.cs" />
-    <Compile Include="UI\ActionExecutingEventArgs.cs" />
+    <Compile Include="Prompter\ActionExecutedEventArgs.cs" />
+    <Compile Include="Prompter\ActionExecutingEventArgs.cs" />
     <Compile Include="UI\CustomConsole.cs" />
-    <Compile Include="UI\Display.cs" />
+    <Compile Include="Prompter\Display.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

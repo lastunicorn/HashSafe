@@ -1,4 +1,4 @@
-﻿// HashSafe
+// HashSafe
 // Copyright (C) 2017 Dust in the Wind
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -14,11 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace DustInTheWind.ConsolePlus.ActionModel
+using System.Collections.Generic;
+
+namespace DustInTheWind.ConsolePlus.CommandModel
 {
-    public struct CommandContext
+    public interface ICommand
     {
-        public CommandBase Command { get; set; }
-        public string[] Parameters { get; set; }
+        string Name { get; }
+        string Description { get; }
+        IEnumerable<string> Usage { get; }
+
+        void Execute(params object[] parameters);
+
+        CommandContext? ParseAndCreateContext(string command);
     }
 }

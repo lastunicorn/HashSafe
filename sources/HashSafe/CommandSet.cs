@@ -15,11 +15,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Collections.Generic;
-using DustInTheWind.ConsolePlus.ActionModel;
+using DustInTheWind.ConsolePlus.CommandModel;
 
 namespace DustInTheWind.HashSafe
 {
-    public class CommandSet : HashSet<CommandBase>
+    public class CommandSet : HashSet<ICommand>
     {
     }
 }

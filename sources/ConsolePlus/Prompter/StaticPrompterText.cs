@@ -1,4 +1,4 @@
-// HashSafe
+﻿// HashSafe
 // Copyright (C) 2017 Dust in the Wind
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -14,28 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Collections.Generic;
-using System.Linq;
-using DustInTheWind.ConsolePlus.ActionModel;
-
-namespace DustInTheWind.ConsolePlus.UI
+namespace DustInTheWind.ConsolePlus.Prompter
 {
-    internal class Display
+    public class StaticPrompterText : IPrompterText
     {
-        public void DisplayInvalidCommandError()
-        {
-            CustomConsole.WriteLine("Invalid command");
-            CustomConsole.WriteLine();
-        }
+        public string Text { get; set; } = "> ";
 
-        public void DisplaySimilarActions(IEnumerable<CommandBase> similarActions)
+        public override string ToString()
         {
-            IEnumerable<string> actionNames = similarActions
-                .Select(x => x.Name);
-
-            string actionNamesConcatenated = string.Join(", ", actionNames);
-            CustomConsole.WriteLine($"Did you ment: {actionNamesConcatenated}");
-            CustomConsole.WriteLine();
+            return Text;
         }
     }
 }

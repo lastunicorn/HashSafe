@@ -16,6 +16,7 @@
 
 using System;
 using System.Threading;
+using DustInTheWind.ConsolePlus.Prompter;
 using DustInTheWind.ConsolePlus.UI;
 using DustInTheWind.HashSafe.Actions;
 using DustInTheWind.HashSafe.Commands;

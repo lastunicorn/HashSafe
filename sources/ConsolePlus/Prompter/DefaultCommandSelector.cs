@@ -17,15 +17,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DustInTheWind.ConsolePlus.ActionModel;
+using DustInTheWind.ConsolePlus.CommandModel;
 
-namespace DustInTheWind.ConsolePlus.UI
+namespace DustInTheWind.ConsolePlus.Prompter
 {
     public sealed class DefaultCommandSelector : ICommandSelector
     {
-        private readonly IEnumerable<CommandBase> commands;
+        private readonly IEnumerable<ICommand> commands;
 
-        public DefaultCommandSelector(IEnumerable<CommandBase> commands)
+        public DefaultCommandSelector(IEnumerable<ICommand> commands)
         {
             if (commands == null) throw new ArgumentNullException(nameof(commands));
             this.commands = commands;
@@ -38,7 +38,7 @@ namespace DustInTheWind.ConsolePlus.UI
                 .FirstOrDefault(x => x != null);
         }
 
-        public List<CommandBase> FindSimilarCommands(string commandText)
+        public List<ICommand> FindSimilarCommands(string commandText)
         {
             return commands
                 .Where(x => commandText.Trim().StartsWith(x.Name) || x.Name.StartsWith(commandText.Trim()))
