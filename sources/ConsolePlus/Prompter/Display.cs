@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DustInTheWind.ConsolePlus.CommandModel;
@@ -37,6 +38,12 @@ namespace DustInTheWind.ConsolePlus.Prompter
             string actionNamesConcatenated = string.Join(", ", actionNames);
             CustomConsole.WriteLine($"Did you meen: {actionNamesConcatenated}");
             CustomConsole.WriteLine();
+        }
+
+        public string ReadCommand(string prompterText)
+        {
+            CustomConsole.WriteEmphasies(prompterText);
+            return CustomConsole.ReadLine(ConsoleColor.Yellow);
         }
     }
 }

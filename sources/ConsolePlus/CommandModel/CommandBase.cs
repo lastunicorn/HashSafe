@@ -24,11 +24,15 @@ namespace DustInTheWind.ConsolePlus.CommandModel
     public abstract class CommandBase : ICommand
     {
         private readonly IAction action;
+        private List<Regex> matchers;
+
         public string Name { get; }
         public string Description => action.Description;
         public abstract IEnumerable<string> Usage { get; }
-        private List<Regex> matchers;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandBase"/> class.
+        /// </summary>
         protected CommandBase(string name, IAction action)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -40,9 +44,17 @@ namespace DustInTheWind.ConsolePlus.CommandModel
 
         protected abstract List<Regex> CreateMatchers();
 
-        public CommandContext? ParseAndCreateContext(string command)
+        /// <summary>
+        /// Tries to parse the request and, if succeeded, a new context <see cref="CommandContext"/> is returned,
+        /// filled with all the necessary data to execute the command.
+        /// If the request cannot be parsed, <c>null</c> is returned.
+        /// </summary>
+        /// <param name="commandText">The request that has to be handled.</param>
+        /// <returns>A new instance of <see cref="CommandContext"/> if the request can be handled by the current instance
+        /// or <c>null</c> if the request cannot be handled.</returns>
+        public CommandContext? ParseAndCreateContext(string commandText)
         {
-            string trimmedCommand = command.Trim();
+            string trimmedCommand = commandText.Trim();
 
             EnsureMatchers();
 
@@ -68,7 +80,11 @@ namespace DustInTheWind.ConsolePlus.CommandModel
 
         protected abstract string[] ExtractParameters(Match match);
 
-        public void Execute(params object[] parameters)
+        /// <summary>
+        /// Executes the associated action.
+        /// </summary>
+        /// <param name="parameters">A list of parameters necessary for the execution of the action.</param>
+        public void Execute(params string[] parameters)
         {
             action.Execute(parameters);
         }

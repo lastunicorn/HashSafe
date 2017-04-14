@@ -31,7 +31,7 @@ namespace DustInTheWind.HashSafe.Actions
             this.applicationEnvironment = applicationEnvironment;
         }
 
-        public void Execute(params object[] parameters)
+        public void Execute(params string[] parameters)
         {
             applicationEnvironment.RequestExit();
         }

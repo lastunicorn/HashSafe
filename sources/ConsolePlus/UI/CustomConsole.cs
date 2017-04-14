@@ -103,10 +103,10 @@ namespace DustInTheWind.ConsolePlus.UI
             return Console.ReadLine();
         }
 
-        public static string ReadAction()
+        public static string ReadLine(ConsoleColor color)
         {
             ConsoleColor oldColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.ForegroundColor = color;
 
             try
             {

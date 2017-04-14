@@ -36,7 +36,7 @@ namespace DustInTheWind.HashSafe.Actions
             this.display = display;
         }
 
-        public void Execute(params object[] parameters)
+        public void Execute(params string[] parameters)
         {
             using (MD5 md5 = MD5.Create())
             {

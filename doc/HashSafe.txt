@@ -1,0 +1,16 @@
+Command Line Prompter
+=====================
+
+The prompter text
+-----------------
+
+Provide a static prompter text:
+	commandLinePrompt.PrompterText = new StaticPrompterText { Text = "HashSafe> " }
+	
+Provide a custom implementation of the IPrompterText interface to have more control over the displayed prompter text.
+
+
+The selection of actions
+------------------------
+
+Each command must implement its own algorithm for parsing a command text and deciding if it can handle the request.

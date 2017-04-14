@@ -19,6 +19,6 @@ namespace DustInTheWind.ConsolePlus.CommandModel
     public interface IAction
     {
         string Description { get; }
-        void Execute(params object[] parameters);
+        void Execute(params string[] parameters);
     }
 }

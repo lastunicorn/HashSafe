@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using DustInTheWind.ConsolePlus.CommandModel;
-using DustInTheWind.ConsolePlus.UI;
 
 namespace DustInTheWind.ConsolePlus.Prompter
 {
@@ -66,9 +65,8 @@ namespace DustInTheWind.ConsolePlus.Prompter
                 PrompterText = new StaticPrompterText();
 
             string text = PrompterText.ToString();
-            CustomConsole.WriteEmphasies(text);
 
-            return CustomConsole.ReadAction();
+            return display.ReadCommand(text);
         }
 
         private void ProcessCommand(string commandText)
@@ -90,13 +88,13 @@ namespace DustInTheWind.ConsolePlus.Prompter
             else
             {
                 ICommand command = commandContext.Value.Command;
-                object[] parameters = commandContext.Value.Parameters;
+                string[] parameters = commandContext.Value.Parameters;
 
                 ExecuteCommand(command, parameters);
             }
         }
 
-        private void ExecuteCommand(ICommand command, object[] parameters)
+        private void ExecuteCommand(ICommand command, string[] parameters)
         {
             ActionExecutingEventArgs actionExecutingEventArgs = new ActionExecutingEventArgs(command);
             OnActionExecuting(actionExecutingEventArgs);

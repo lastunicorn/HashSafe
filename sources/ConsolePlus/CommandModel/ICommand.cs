@@ -24,8 +24,20 @@ namespace DustInTheWind.ConsolePlus.CommandModel
         string Description { get; }
         IEnumerable<string> Usage { get; }
 
-        void Execute(params object[] parameters);
+        /// <summary>
+        /// Tries to parse the request and, if succeeded, a new context <see cref="CommandContext"/> is returned,
+        /// filled with all the necessary data to execute the command.
+        /// If the request cannot be parsed, <c>null</c> is returned.
+        /// </summary>
+        /// <param name="commandText">The request that has to be handled.</param>
+        /// <returns>A new instance of <see cref="CommandContext"/> if the request can be handled by the current instance
+        /// or <c>null</c> if the request cannot be handled.</returns>
+        CommandContext? ParseAndCreateContext(string commandText);
 
-        CommandContext? ParseAndCreateContext(string command);
+        /// <summary>
+        /// Executes the associated action.
+        /// </summary>
+        /// <param name="parameters">A list of parameters necessary for the execution of the action.</param>
+        void Execute(params string[] parameters);
     }
 }

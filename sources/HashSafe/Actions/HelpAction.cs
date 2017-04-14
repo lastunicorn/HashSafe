@@ -37,12 +37,12 @@ namespace DustInTheWind.HashSafe.Actions
             this.display = display;
         }
 
-        public void Execute(params object[] parameters)
+        public void Execute(params string[] parameters)
         {
             // todo: read multiple parameters
 
             string verbName = parameters.Length >= 1
-                ? parameters[0] as string
+                ? parameters[0]
                 : null;
 
             Execute(verbName);

@@ -22,9 +22,9 @@ namespace DustInTheWind.ConsolePlus.Prompter
     public class ActionExecutedEventArgs : EventArgs
     {
         public ICommand Command { get; private set; }
-        public object[] Parameters { get; private set; }
+        public string[] Parameters { get; private set; }
 
-        public ActionExecutedEventArgs(ICommand command, object[] parameters)
+        public ActionExecutedEventArgs(ICommand command, string[] parameters)
         {
             if (command == null) throw new ArgumentNullException(nameof(command));
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
