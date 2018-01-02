@@ -17,7 +17,7 @@
 using System.Collections.Generic;
 using DustInTheWind.ConsolePlus.CommandModel;
 
-namespace DustInTheWind.HashSafe
+namespace DustInTheWind.HashSafe.Cli
 {
     public class CommandSet : HashSet<ICommand>
     {

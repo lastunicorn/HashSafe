@@ -16,18 +16,18 @@
 
 using System;
 using System.Security.Cryptography;
-using DustInTheWind.ConsolePlus.CommandModel;
+using DustInTheWind.ConsoleTools.Mvc;
 
-namespace DustInTheWind.HashSafe.Actions
+namespace DustInTheWind.HashSafe.Cli.Controllers
 {
-    internal class HashAction : IAction
+    internal class HashController : IController
     {
         private readonly TargetsProvider targetsProvider;
         private readonly Display display;
 
         public string Description => "Calculates the hashes for all the targets in the proj file.";
 
-        public HashAction(TargetsProvider targetsProvider, Display display)
+        public HashController(TargetsProvider targetsProvider, Display display)
         {
             if (targetsProvider == null) throw new ArgumentNullException(nameof(targetsProvider));
             if (display == null) throw new ArgumentNullException(nameof(display));
@@ -36,13 +36,31 @@ namespace DustInTheWind.HashSafe.Actions
             this.display = display;
         }
 
-        public void Execute(params string[] parameters)
+        public void Execute()
         {
             using (MD5 md5 = MD5.Create())
             {
-                Processor processor = new Processor(targetsProvider, md5, display);
-                processor.Execute();
+                Processor processor = new Processor(targetsProvider, md5);
+                processor.TargetProcessed += HandleTargetProcessed;
+
+                try
+                {
+                    processor.Execute();
+                }
+                finally
+                {
+                    processor.TargetProcessed -= HandleTargetProcessed;
+                    display.Summary(processor.ElapsedTime);
+                }
             }
+        }
+
+        private void HandleTargetProcessed(object sender, TargetProcessedEventArgs e)
+        {
+            if (e.Hash != null)
+                display.DisplayFileHash(e.Target, e.Hash);
+            else
+                display.DisplayTargetNotFound(e.Target);
         }
     }
 }

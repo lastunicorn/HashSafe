@@ -14,32 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using DustInTheWind.ConsolePlus.CommandModel;
+using System;
+using DustInTheWind.ConsoleTools.Mvc;
 
-namespace DustInTheWind.HashSafe.Commands
+namespace DustInTheWind.HashSafe.Cli.Controllers
 {
-    internal class ExitCommand : CommandBase
+    internal class HelpController : IController
     {
-        public ExitCommand(IAction action)
-            : base("exit", action)
+        private readonly Display display;
+
+        public string Description => "Displays details about an command. It may be a verb (that you use in the game, like \"look\", \"talk\", etc) or a command (to control the game, like \"menu\", \"save\", etc).";
+
+        public HelpController(Display display)
         {
+            if (display == null) throw new ArgumentNullException(nameof(display));
+            
+            this.display = display;
         }
 
-        public override IEnumerable<string> Usage => new List<string> { "<<exit>>" };
-
-        protected override List<Regex> CreateMatchers()
+        public void Execute()
         {
-            return new List<Regex>
-            {
-                new Regex(@"^\s*exit\s*$", RegexOptions.IgnoreCase | RegexOptions.Singleline)
-            };
-        }
-
-        protected override string[] ExtractParameters(Match match)
-        {
-            return new string[0];
         }
     }
 }

@@ -15,25 +15,31 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using DustInTheWind.ConsolePlus.CommandModel;
+using DustInTheWind.ConsoleTools;
 
-namespace DustInTheWind.HashSafe.Actions
+namespace DustInTheWind.HashSafe.Cli
 {
-    internal class ExitAction : IAction
+    internal class Display
     {
-        private readonly ApplicationEnvironment applicationEnvironment;
-
-        public string Description => "Exits the game.";
-
-        public ExitAction(ApplicationEnvironment applicationEnvironment)
+        public void DisplayFileHash(string fileName, byte[] hash)
         {
-            if (applicationEnvironment == null) throw new ArgumentNullException(nameof(applicationEnvironment));
-            this.applicationEnvironment = applicationEnvironment;
+            string hex = BitConverter.ToString(hash).Replace("-", string.Empty);
+            CustomConsole.WriteEmphasies(fileName);
+            CustomConsole.Write(" - ");
+            CustomConsole.WriteLine(hex);
         }
 
-        public void Execute(params string[] parameters)
+        public void DisplayTargetNotFound(string target)
         {
-            applicationEnvironment.RequestExit();
+            CustomConsole.WriteError($"target not found: {target}");
+        }
+
+        public void Summary(TimeSpan elapsedTime)
+        {
+            CustomConsole.WriteLine();
+            CustomConsole.WriteEmphasies(" Elapsed time: ");
+            CustomConsole.WriteLine(elapsedTime.ToString());
+            CustomConsole.WriteLine();
         }
     }
 }

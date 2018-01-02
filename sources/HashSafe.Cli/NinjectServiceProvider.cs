@@ -14,32 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using DustInTheWind.ConsolePlus.CommandModel;
+using System;
+using Ninject;
 
-namespace DustInTheWind.HashSafe.Commands
+namespace DustInTheWind.HashSafe.Cli
 {
-    internal class XCommand : CommandBase
+    internal class NinjectServiceProvider : IServiceProvider
     {
-        public override IEnumerable<string> Usage => new List<string> { "<<x>>" };
+        private readonly IKernel kernel;
 
-        public XCommand(IAction action)
-            : base("x", action)
+        public NinjectServiceProvider(IKernel kernel)
         {
+            if (kernel == null) throw new ArgumentNullException(nameof(kernel));
+            this.kernel = kernel;
         }
 
-        protected override List<Regex> CreateMatchers()
+        public object GetService(Type serviceType)
         {
-            return new List<Regex>
-            {
-                new Regex(@"^\s*x\s*$", RegexOptions.IgnoreCase | RegexOptions.Singleline)
-            };
-        }
-
-        protected override string[] ExtractParameters(Match match)
-        {
-            return new string[0];
+            return kernel.Get(serviceType);
         }
     }
 }

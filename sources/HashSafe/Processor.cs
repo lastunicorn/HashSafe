@@ -22,22 +22,23 @@ using System.Security.Cryptography;
 
 namespace DustInTheWind.HashSafe
 {
-    internal class Processor
+    public class Processor
     {
         private readonly TargetsProvider targetsProvider;
-        private readonly Display display;
         private readonly HashAlgorithm hashAlgorithm;
         private readonly HashesFile hashesFile;
 
-        public Processor(TargetsProvider targetsProvider, HashAlgorithm hashAlgorithm, Display display)
+        public TimeSpan ElapsedTime { get; set; }
+
+        public event EventHandler<TargetProcessedEventArgs> TargetProcessed; 
+
+        public Processor(TargetsProvider targetsProvider, HashAlgorithm hashAlgorithm)
         {
             if (targetsProvider == null) throw new ArgumentNullException(nameof(targetsProvider));
             if (hashAlgorithm == null) throw new ArgumentNullException(nameof(hashAlgorithm));
-            if (display == null) throw new ArgumentNullException(nameof(display));
 
             this.targetsProvider = targetsProvider;
             this.hashAlgorithm = hashAlgorithm;
-            this.display = display;
 
             hashesFile = new HashesFile();
         }
@@ -56,7 +57,7 @@ namespace DustInTheWind.HashSafe
             hashesFile.Close();
 
             sw.Stop();
-            display.Summary(sw.Elapsed);
+            ElapsedTime = sw.Elapsed;
         }
 
         private void ProcessTarget(string target)
@@ -83,9 +84,9 @@ namespace DustInTheWind.HashSafe
                 hashesFile.AddErrorTarget(fileName, ex);
                 return;
             }
-
-            display.DisplayFileHash(fileName, hash);
+            
             hashesFile.AddHash(fileName, hash);
+            OnTargetProcessed(new TargetProcessedEventArgs(fileName, hash));
         }
 
         private void ProcessDirectory(string directoryPath)
@@ -98,8 +99,13 @@ namespace DustInTheWind.HashSafe
 
         private void ProcessInexistentTarget(string target)
         {
-            display.DisplayTargetNotFound(target);
             hashesFile.AddMissingTarget(target);
+            OnTargetProcessed(new TargetProcessedEventArgs(target, null));
+        }
+
+        protected virtual void OnTargetProcessed(TargetProcessedEventArgs e)
+        {
+            TargetProcessed?.Invoke(this, e);
         }
     }
 }
