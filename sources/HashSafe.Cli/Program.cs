@@ -20,8 +20,8 @@ namespace DustInTheWind.HashSafe.Cli
     {
         private static void Main()
         {
-            ApplicationEnvironment applicationEnvironment = new ApplicationEnvironment();
-            applicationEnvironment.Run();
+            Bootstrapper bootstrapper = new Bootstrapper();
+            bootstrapper.Run();
         }
     }
 }

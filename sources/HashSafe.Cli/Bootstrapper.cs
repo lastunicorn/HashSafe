@@ -24,11 +24,11 @@ using Ninject;
 
 namespace DustInTheWind.HashSafe.Cli
 {
-    internal class ApplicationEnvironment
+    internal class Bootstrapper
     {
         private readonly ConsoleApplication consoleApplication;
 
-        public ApplicationEnvironment()
+        public Bootstrapper()
         {
             IKernel kernel = CreateAndConfigureKernel();
 
@@ -50,7 +50,6 @@ namespace DustInTheWind.HashSafe.Cli
 
             kernel.Bind<ConsoleApplication>().To<ConsoleApplication>().InSingletonScope();
             kernel.Bind<Display>().To<Display>().InSingletonScope();
-            kernel.Bind<TargetsProvider>().To<TargetsProvider>().InSingletonScope();
 
             return kernel;
         }

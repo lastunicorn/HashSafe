@@ -21,21 +21,25 @@ namespace DustInTheWind.HashSafe
 {
     internal class HashesFile : IDisposable
     {
-        private const string HashesFileName = "hashes";
-        private const string HashesTmpFileName = "hashes-tmp";
-        private const string HashesBakFileName = "hashes-bak";
+        private readonly string projectFileName;
+        private string hashesFileName;
 
         private StreamWriter streamWriter;
+
+        public HashesFile(string projectFileName)
+        {
+            if (projectFileName == null) throw new ArgumentNullException(nameof(projectFileName));
+            this.projectFileName = projectFileName;
+        }
 
         public void Open()
         {
             if (streamWriter != null)
                 return;
 
-            if (File.Exists(HashesTmpFileName))
-                throw new Exception($"The previous hashing process was not completed. Delete the temporary {HashesTmpFileName} file and then try again.");
+            hashesFileName = string.Format("{0}.{1:yyyy MM dd HHmmss}.hashes", projectFileName, DateTime.Now);
 
-            streamWriter = new StreamWriter(HashesTmpFileName);
+            streamWriter = new StreamWriter(hashesFileName);
         }
 
         public void AddHash(string fileName, byte[] hash)
@@ -77,16 +81,11 @@ namespace DustInTheWind.HashSafe
         public void Close()
         {
             if (streamWriter == null)
-                throw new Exception("No file is opened");
+                throw new ApplicationException("The file is not opened.");
 
             streamWriter.Close();
             streamWriter.Dispose();
             streamWriter = null;
-
-            if (File.Exists(HashesFileName))
-                File.Replace(HashesTmpFileName, HashesFileName, HashesBakFileName);
-            else
-                File.Move(HashesTmpFileName, HashesFileName);
         }
     }
 }

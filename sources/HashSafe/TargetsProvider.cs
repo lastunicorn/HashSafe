@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -21,9 +22,14 @@ namespace DustInTheWind.HashSafe
 {
     public class TargetsProvider
     {
+        public string FileName { get; set; }
+
         public IEnumerable<string> GetTargets()
         {
-            return File.ReadAllLines("proj");
+            if (!File.Exists(FileName))
+                throw new ApplicationException($"Project file name {FileName} does not exist.");
+
+            return File.ReadAllLines(FileName);
         }
     }
 }

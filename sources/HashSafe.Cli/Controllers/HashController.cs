@@ -15,31 +15,51 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
+using DustInTheWind.ConsoleTools;
+using DustInTheWind.ConsoleTools.CommandProviders;
 using DustInTheWind.ConsoleTools.Mvc;
 
 namespace DustInTheWind.HashSafe.Cli.Controllers
 {
     internal class HashController : IController
     {
-        private readonly TargetsProvider targetsProvider;
         private readonly Display display;
 
         public string Description => "Calculates the hashes for all the targets in the proj file.";
 
-        public HashController(TargetsProvider targetsProvider, Display display)
+        public HashController(Display display)
         {
-            if (targetsProvider == null) throw new ArgumentNullException(nameof(targetsProvider));
             if (display == null) throw new ArgumentNullException(nameof(display));
 
-            this.targetsProvider = targetsProvider;
             this.display = display;
         }
 
-        public void Execute()
+        public void Execute(IReadOnlyCollection<UserCommandParameter> parameters)
         {
+            if (parameters == null || !parameters.Any())
+                throw new ApplicationException("Please provide a project file.");
+
+            UserCommandParameter param = parameters.ElementAt(0);
+
+            if (param.Name == "comp" || param.Name == "compare")
+            {
+                CustomConsole.WriteLineWarning("Compare is not implemented yet.");
+                return;
+            }
+
+            string projectFileName = param.Name;
+
+            TargetsProvider targetsProvider = new TargetsProvider
+            {
+                FileName = projectFileName
+            };
+
             using (MD5 md5 = MD5.Create())
             {
+
                 Processor processor = new Processor(targetsProvider, md5);
                 processor.TargetProcessed += HandleTargetProcessed;
 

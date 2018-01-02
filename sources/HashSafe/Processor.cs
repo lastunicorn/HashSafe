@@ -40,7 +40,7 @@ namespace DustInTheWind.HashSafe
             this.targetsProvider = targetsProvider;
             this.hashAlgorithm = hashAlgorithm;
 
-            hashesFile = new HashesFile();
+            hashesFile = new HashesFile(targetsProvider.FileName);
         }
 
         public void Execute()
