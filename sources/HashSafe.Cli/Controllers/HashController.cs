@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Cryptography;
 using DustInTheWind.ConsoleTools;
@@ -39,6 +40,11 @@ namespace DustInTheWind.HashSafe.Cli.Controllers
 
         public void Execute(IReadOnlyCollection<UserCommandParameter> parameters)
         {
+            Execute(parameters as ReadOnlyCollection<UserCommandParameter>);
+        }
+
+        private void Execute(ReadOnlyCollection<UserCommandParameter> parameters)
+        {
             if (parameters == null || !parameters.Any())
                 throw new ApplicationException("Please provide a project file.");
 
@@ -52,6 +58,11 @@ namespace DustInTheWind.HashSafe.Cli.Controllers
 
             string projectFileName = param.Name;
 
+            RunProjectFile(projectFileName);
+        }
+
+        private void RunProjectFile(string projectFileName)
+        {
             TargetsProvider targetsProvider = new TargetsProvider
             {
                 FileName = projectFileName
@@ -59,7 +70,6 @@ namespace DustInTheWind.HashSafe.Cli.Controllers
 
             using (MD5 md5 = MD5.Create())
             {
-
                 Processor processor = new Processor(targetsProvider, md5);
                 processor.TargetProcessed += HandleTargetProcessed;
 

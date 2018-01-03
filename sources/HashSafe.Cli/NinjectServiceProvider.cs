@@ -19,16 +19,28 @@ using Ninject;
 
 namespace DustInTheWind.HashSafe.Cli
 {
+    /// <summary>
+    /// Adapter class to expose the Ninject kernel (<see cref="T:Ninject.IKernel" />)
+    /// as an <see cref="T:System.IServiceProvider" />.
+    /// </summary>
     internal class NinjectServiceProvider : IServiceProvider
     {
         private readonly IKernel kernel;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NinjectServiceProvider"/> class with
+        /// the underlying Ninject kernel.
+        /// </summary>
+        /// <param name="kernel"></param>
         public NinjectServiceProvider(IKernel kernel)
         {
             if (kernel == null) throw new ArgumentNullException(nameof(kernel));
             this.kernel = kernel;
         }
 
+        /// <summary>
+        /// Returns an instance of the specified type.
+        /// </summary>
         public object GetService(Type serviceType)
         {
             return kernel.Get(serviceType);

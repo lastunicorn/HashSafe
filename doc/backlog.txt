@@ -1,0 +1,14 @@
+HashSafe
+========
+
+Compare two timestamps
+----------------------
+As a user when I type "hash compare <timestamp1> <timestamp2>"
+I want to see a list with the differences between the results from the two timestamps (new, deleted, modified files)
+so that I am able to easily spot the modified files between the two timestamps.
+
+Compare timestamp with current
+------------------------------
+As a user when I perform a comparison and I provide only a single timestamp
+I want the application to perform a new scan and compare it with the provided one
+so that I am able to easily spot the modified files between the specified timestamp and the current state of the files.
