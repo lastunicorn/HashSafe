@@ -30,28 +30,33 @@ namespace DustInTheWind.HashSafe.Cli
 
         public Bootstrapper()
         {
-            IKernel kernel = CreateAndConfigureKernel();
+            IServiceProvider serviceProvider = CreateServiceProvider();
 
-            consoleApplication = kernel.Get<ConsoleApplication>();
+            consoleApplication = serviceProvider != null
+                ? (ConsoleApplication)serviceProvider.GetService(typeof(ConsoleApplication))
+                : new ConsoleApplication();
 
-            consoleApplication.ConfigureRoutes(new List<Route>
+            ConfigureRoutes(consoleApplication.Routes);
+            consoleApplication.ServiceProvider = serviceProvider;
+        }
+
+        private static IServiceProvider CreateServiceProvider()
+        {
+            StandardKernel kernel = new StandardKernel();
+
+            kernel.Bind<ConsoleApplication>().To<ConsoleApplication>().InSingletonScope();
+
+            return kernel;
+        }
+
+        private static void ConfigureRoutes(List<Route> routes)
+        {
+            routes.AddRange(new[]
             {
                 new Route("help", typeof(HelpController)),
                 new Route("hash", typeof(HashController)),
-                new Route("exit", typeof(ExitController)),
+                new Route("exit", typeof(ExitController))
             });
-
-            consoleApplication.ServiceProvider = new NinjectServiceProvider(kernel);
-        }
-
-        private static IKernel CreateAndConfigureKernel()
-        {
-            IKernel kernel = new StandardKernel();
-
-            kernel.Bind<ConsoleApplication>().To<ConsoleApplication>().InSingletonScope();
-            kernel.Bind<Display>().To<Display>().InSingletonScope();
-
-            return kernel;
         }
 
         public void Run()
@@ -59,7 +64,7 @@ namespace DustInTheWind.HashSafe.Cli
             try
             {
                 consoleApplication.Run();
-                
+
                 CustomConsole.WriteLine("Bye!");
                 Thread.Sleep(500);
             }
@@ -68,7 +73,7 @@ namespace DustInTheWind.HashSafe.Cli
                 CustomConsole.WriteError("Fatal error");
                 CustomConsole.WriteError(ex);
 
-                CustomConsole.Pause();
+                Pause.DisplayDefault();
             }
         }
     }

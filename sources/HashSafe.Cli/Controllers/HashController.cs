@@ -15,7 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Cryptography;
@@ -38,12 +37,7 @@ namespace DustInTheWind.HashSafe.Cli.Controllers
             this.display = display;
         }
 
-        public void Execute(IReadOnlyCollection<UserCommandParameter> parameters)
-        {
-            Execute(parameters as ReadOnlyCollection<UserCommandParameter>);
-        }
-
-        private void Execute(ReadOnlyCollection<UserCommandParameter> parameters)
+        public void Execute(ReadOnlyCollection<UserCommandParameter> parameters)
         {
             if (parameters == null || !parameters.Any())
                 throw new ApplicationException("Please provide a project file.");
