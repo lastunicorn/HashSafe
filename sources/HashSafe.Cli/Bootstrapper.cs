@@ -73,7 +73,7 @@ namespace DustInTheWind.HashSafe.Cli
                 CustomConsole.WriteError("Fatal error");
                 CustomConsole.WriteError(ex);
 
-                Pause.DisplayDefault();
+                Pause.QuickPause();
             }
         }
     }

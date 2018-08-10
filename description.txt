@@ -1,0 +1,4 @@
+HashSafe
+--------
+
+A command line tool that calculates hash values (md5) for a list of files and stores them on disk in a file.

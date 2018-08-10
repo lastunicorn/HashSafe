@@ -33,8 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DustInTheWind.ConsoleTools, Version=0.0.2.17549, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ConsoleTools.0.0.2\lib\net461\DustInTheWind.ConsoleTools.dll</HintPath>
+    <Reference Include="DustInTheWind.ConsoleTools, Version=0.0.2.31088, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ConsoleTools.0.1.0\lib\net46\DustInTheWind.ConsoleTools.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
